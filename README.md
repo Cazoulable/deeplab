@@ -1,2 +1,2 @@
 # steel
-Kaggle Steel competition
+Kaggle Steel competition : https://www.kaggle.com/c/severstal-steel-defect-detection/overview

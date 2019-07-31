@@ -33,7 +33,7 @@ tf.app.flags.DEFINE_string(
   '/Users/simon.cazals/Desktop/projects/steel/data/tfrecord',
   'Path to save converted tfrecord of Tensorflow example')
 
-_NUM_SHARDS = 4
+_NUM_SHARDS = 10
 
 
 def numpy_to_bytes(image_np, image_format):
@@ -133,6 +133,7 @@ def _convert_dataset(dataset_split, image_names, labels_df):
 
 def main(unused_argv):
   tf.gfile.MakeDirs(FLAGS.output_dir)
+  FLAGS.image_format = 'jpeg'
 
   train_image_names, val_image_names = _split_dataset(FLAGS.image_folder, FLAGS.split_ratio)
   labels_df = pd.read_csv(FLAGS.label_file)

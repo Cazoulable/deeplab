@@ -28,3 +28,25 @@ This scripts will split the training set into train/val sets (default is 90%/10%
 
 ## Training
 
+
+A local training job using `xception_65` can be run with the following command:
+
+```bash
+# From tensorflow/models/research/
+python deeplab/train.py \
+    --logtostderr \
+    --training_number_of_steps=30000 \
+    --train_split="train" \
+    --model_variant="xception_65" \
+    --atrous_rates=6 \
+    --atrous_rates=12 \
+    --atrous_rates=18 \
+    --output_stride=16 \
+    --decoder_output_stride=4 \
+    --train_crop_size="513,513" \
+    --train_batch_size=1 \
+    --dataset="pascal_voc_seg" \
+    --tf_initial_checkpoint=${PATH_TO_INITIAL_CHECKPOINT} \
+    --train_logdir=${PATH_TO_TRAIN_DIR} \
+    --dataset_dir=${PATH_TO_DATASET}
+```

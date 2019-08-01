@@ -14,7 +14,7 @@ First you need to download the data from the competition and organize your folde
     * train.csv  
     * train_images/  
   
-Then, from the steel repo, we can run  
+Then run from the steel repo
 ```
 python3 deeplab/datasets/build_steel_data.py
 ```   

@@ -6,7 +6,7 @@ Deeplab : https://github.com/tensorflow/models/tree/master/research/deeplab
 ## Building dataset
 
 First you need to download the data from the competition and organize your folder that way :  
-* projects/steel   
+* project  
   * steel (code repo)  
   * data  
     * sample_submission.csv  

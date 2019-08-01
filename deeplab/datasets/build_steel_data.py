@@ -14,24 +14,15 @@ import build_data
 
 FLAGS = tf.app.flags.FLAGS
 
-tf.app.flags.DEFINE_string(
-  'image_folder', 
-  '/Users/simon.cazals/Desktop/projects/steel/data/train_images',
-  'Folder containing training images')
+tf.app.flags.DEFINE_string('image_folder', '../data/train_images', 'Folder containing training images')
 
-tf.app.flags.DEFINE_string(
-  'label_file',
-  '/Users/simon.cazals/Desktop/projects/steel/data/train.csv',
-  'Folder containing annotations for trainng images')
+tf.app.flags.DEFINE_string('label_file', '../data/train.csv', 'Folder containing annotations for trainng images')
 
 tf.app.flags.DEFINE_float('split_ratio', 0.9, 'Split ratio')
 
 tf.app.flags.DEFINE_integer('seed', 42, 'Seed for reproducibility')
 
-tf.app.flags.DEFINE_string(
-  'output_dir', 
-  '/Users/simon.cazals/Desktop/projects/steel/data/tfrecord',
-  'Path to save converted tfrecord of Tensorflow example')
+tf.app.flags.DEFINE_string('output_dir', '../data/tfrecord', 'Path to save converted tfrecord of Tensorflow example')
 
 _NUM_SHARDS = 10
 

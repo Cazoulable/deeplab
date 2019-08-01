@@ -7,7 +7,11 @@ Deeplab : https://github.com/tensorflow/models/tree/master/research/deeplab
 
 First you need to download the data from the competition and organize your folder that way :  
 * project  
-  * steel (code repo)  
+  * steel (code repo)
+    * deeplab
+      * ...
+    * notebooks
+      * ...
   * data  
     * sample_submission.csv  
     * test_images/  

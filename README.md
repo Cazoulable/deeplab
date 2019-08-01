@@ -18,8 +18,8 @@ First you need to download the data from the competition and organize your folde
     * train.csv  
     * train_images/  
   
-Then run from the steel repo
+Then, run from the steel repo
 ```
 python3 deeplab/datasets/build_steel_data.py
 ```   
-The scripts will split the training set into a train/val set (90-10) and store the images into tfrecords.
+This scripts will split the training set into train/val sets (default is 90%/10% split) and store the data into tfrecords.

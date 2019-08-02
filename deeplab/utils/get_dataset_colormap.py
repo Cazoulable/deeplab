@@ -33,6 +33,7 @@ _ADE20K = 'ade20k'
 _CITYSCAPES = 'cityscapes'
 _MAPILLARY_VISTAS = 'mapillary_vistas'
 _PASCAL = 'pascal'
+_STEEL = 'steel'
 
 # Max number of entries in the colormap for each dataset.
 _DATASET_MAX_ENTRIES = {
@@ -40,16 +41,17 @@ _DATASET_MAX_ENTRIES = {
     _CITYSCAPES: 256,
     _MAPILLARY_VISTAS: 66,
     _PASCAL: 256,
+    _STEEL: 5
 }
 
 
 def create_ade20k_label_colormap():
-  """Creates a label colormap used in ADE20K segmentation benchmark.
+    """Creates a label colormap used in ADE20K segmentation benchmark.
 
-  Returns:
-    A colormap for visualizing segmentation results.
-  """
-  return np.asarray([
+    Returns:
+        A colormap for visualizing segmentation results.
+    """
+    return np.asarray([
       [0, 0, 0],
       [120, 120, 120],
       [180, 120, 120],
@@ -201,45 +203,61 @@ def create_ade20k_label_colormap():
       [25, 194, 194],
       [102, 255, 0],
       [92, 0, 255],
-  ])
+    ])
 
 
 def create_cityscapes_label_colormap():
-  """Creates a label colormap used in CITYSCAPES segmentation benchmark.
+    """Creates a label colormap used in CITYSCAPES segmentation benchmark.
 
-  Returns:
-    A colormap for visualizing segmentation results.
-  """
-  colormap = np.zeros((256, 3), dtype=np.uint8)
-  colormap[0] = [128, 64, 128]
-  colormap[1] = [244, 35, 232]
-  colormap[2] = [70, 70, 70]
-  colormap[3] = [102, 102, 156]
-  colormap[4] = [190, 153, 153]
-  colormap[5] = [153, 153, 153]
-  colormap[6] = [250, 170, 30]
-  colormap[7] = [220, 220, 0]
-  colormap[8] = [107, 142, 35]
-  colormap[9] = [152, 251, 152]
-  colormap[10] = [70, 130, 180]
-  colormap[11] = [220, 20, 60]
-  colormap[12] = [255, 0, 0]
-  colormap[13] = [0, 0, 142]
-  colormap[14] = [0, 0, 70]
-  colormap[15] = [0, 60, 100]
-  colormap[16] = [0, 80, 100]
-  colormap[17] = [0, 0, 230]
-  colormap[18] = [119, 11, 32]
-  return colormap
+    Returns:
+        A colormap for visualizing segmentation results.
+    """
+    colormap = np.zeros((256, 3), dtype=np.uint8)
+    colormap[0] = [128, 64, 128]
+    colormap[1] = [244, 35, 232]
+    colormap[2] = [70, 70, 70]
+    colormap[3] = [102, 102, 156]
+    colormap[4] = [190, 153, 153]
+    colormap[5] = [153, 153, 153]
+    colormap[6] = [250, 170, 30]
+    colormap[7] = [220, 220, 0]
+    colormap[8] = [107, 142, 35]
+    colormap[9] = [152, 251, 152]
+    colormap[10] = [70, 130, 180]
+    colormap[11] = [220, 20, 60]
+    colormap[12] = [255, 0, 0]
+    colormap[13] = [0, 0, 142]
+    colormap[14] = [0, 0, 70]
+    colormap[15] = [0, 60, 100]
+    colormap[16] = [0, 80, 100]
+    colormap[17] = [0, 0, 230]
+    colormap[18] = [119, 11, 32]
+    return colormap
+
+
+def create_steel_label_colormap():
+    """Creates a label colormap used in STEEL segmentation benchmark.
+
+    Returns:
+        A colormap for visualizing segmentation results.
+    """
+    colormap = np.zeros((256, 3), dtype=np.uint8)
+    colormap[0] = [0, 0, 0]
+    colormap[1] = [255, 0, 0]
+    colormap[2] = [0, 255, 0]
+    colormap[3] = [0, 0, 255]
+    colormap[4] = [0, 255, 255]
+
+    return colormap
 
 
 def create_mapillary_vistas_label_colormap():
-  """Creates a label colormap used in Mapillary Vistas segmentation benchmark.
+    """Creates a label colormap used in Mapillary Vistas segmentation benchmark.
 
-  Returns:
-    A colormap for visualizing segmentation results.
-  """
-  return np.asarray([
+    Returns:
+        A colormap for visualizing segmentation results.
+    """
+    return np.asarray([
       [165, 42, 42],
       [0, 192, 0],
       [196, 196, 196],
@@ -310,73 +328,78 @@ def create_mapillary_vistas_label_colormap():
 
 
 def create_pascal_label_colormap():
-  """Creates a label colormap used in PASCAL VOC segmentation benchmark.
+    """Creates a label colormap used in PASCAL VOC segmentation benchmark.
 
-  Returns:
-    A colormap for visualizing segmentation results.
-  """
-  colormap = np.zeros((_DATASET_MAX_ENTRIES[_PASCAL], 3), dtype=int)
-  ind = np.arange(_DATASET_MAX_ENTRIES[_PASCAL], dtype=int)
+    Returns:
+        A colormap for visualizing segmentation results.
+    """
+    colormap = np.zeros((_DATASET_MAX_ENTRIES[_PASCAL], 3), dtype=int)
+    ind = np.arange(_DATASET_MAX_ENTRIES[_PASCAL], dtype=int)
 
-  for shift in reversed(range(8)):
-    for channel in range(3):
-      colormap[:, channel] |= bit_get(ind, channel) << shift
-    ind >>= 3
+    for shift in reversed(range(8)):
+        for channel in range(3):
+            colormap[:, channel] |= bit_get(ind, channel) << shift
+        ind >>= 3
 
-  return colormap
+    return colormap
 
+
+def get_steel_name():
+      return _STEEL
 
 def get_ade20k_name():
-  return _ADE20K
+      return _ADE20K
 
 
 def get_cityscapes_name():
-  return _CITYSCAPES
+      return _CITYSCAPES
 
 
 def get_mapillary_vistas_name():
-  return _MAPILLARY_VISTAS
+      return _MAPILLARY_VISTAS
 
 
 def get_pascal_name():
-  return _PASCAL
+      return _PASCAL
 
 
 def bit_get(val, idx):
-  """Gets the bit value.
+    """Gets the bit value.
 
-  Args:
-    val: Input value, int or numpy int array.
-    idx: Which bit of the input val.
+    Args:
+        val: Input value, int or numpy int array.
+        idx: Which bit of the input val.
 
-  Returns:
-    The "idx"-th bit of input val.
-  """
-  return (val >> idx) & 1
+    Returns:
+        The "idx"-th bit of input val.
+    """
+    return (val >> idx) & 1
 
 
 def create_label_colormap(dataset=_PASCAL):
-  """Creates a label colormap for the specified dataset.
+    """Creates a label colormap for the specified dataset.
 
-  Args:
-    dataset: The colormap used in the dataset.
+    Args:
+        dataset: The colormap used in the dataset.
 
-  Returns:
-    A numpy array of the dataset colormap.
+    Returns:
+        A numpy array of the dataset colormap.
 
-  Raises:
-    ValueError: If the dataset is not supported.
-  """
-  if dataset == _ADE20K:
-    return create_ade20k_label_colormap()
-  elif dataset == _CITYSCAPES:
-    return create_cityscapes_label_colormap()
-  elif dataset == _MAPILLARY_VISTAS:
-    return create_mapillary_vistas_label_colormap()
-  elif dataset == _PASCAL:
-    return create_pascal_label_colormap()
-  else:
-    raise ValueError('Unsupported dataset.')
+    Raises:
+        ValueError: If the dataset is not supported.
+    """
+    if dataset == _ADE20K:
+        return create_ade20k_label_colormap()
+    elif dataset == _CITYSCAPES:
+        return create_cityscapes_label_colormap()
+    elif dataset == _MAPILLARY_VISTAS:
+        return create_mapillary_vistas_label_colormap()
+    elif dataset == _PASCAL:
+        return create_pascal_label_colormap()
+    elif dataset == _STEEL:
+        return create_steel_label_colormap()
+    else:
+        raise ValueError('Unsupported dataset.')
 
 
 def label_to_color_image(label, dataset=_PASCAL):
@@ -408,4 +431,4 @@ def label_to_color_image(label, dataset=_PASCAL):
 
 
 def get_dataset_colormap_max_entries(dataset):
-  return _DATASET_MAX_ENTRIES[dataset]
+    return _DATASET_MAX_ENTRIES[dataset]

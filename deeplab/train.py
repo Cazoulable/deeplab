@@ -401,7 +401,7 @@ def _train_deeplab_model(iterator, num_of_classes, ignore_label):
         # This implementation is mirrored from tf.slim.summaries.
         should_log = math_ops.equal(math_ops.mod(global_step, FLAGS.log_steps), 0)
         total_loss = tf.cond(should_log,
-                             lambda: tf.Print(total_loss, [total_loss], 'Total loss is :'),
+                             lambda: tf.print(total_loss, [total_loss], 'Total loss is :'),
                              lambda: total_loss)
 
         tf.summary.scalar('total_loss', total_loss)

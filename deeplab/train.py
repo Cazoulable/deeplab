@@ -18,8 +18,11 @@ See model.py for more details and usage.
 """
 
 import six
+import sys
 import tensorflow as tf
 from tensorflow.python.ops import math_ops
+
+sys.path.append("/Users/simon.cazals/Desktop/projects/steel/steel/")
 from deeplab import common
 from deeplab import model
 from deeplab.datasets import data_generator

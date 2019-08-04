@@ -22,9 +22,9 @@ Please see the paper for details:
 Carsten Rother and Piotr Dollar. arXiv:1801.00868, 2018.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import collections
 import numpy as np

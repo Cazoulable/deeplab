@@ -23,9 +23,9 @@ Yukun Zhu, Jyh-Jing Hwang, Ting Liu, Xiao Zhang, Vivienne Sze,
 George Papandreou, Liang-Chieh Chen. arXiv: 1902.05093, 2019.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import collections
 

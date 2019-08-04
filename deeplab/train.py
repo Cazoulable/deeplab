@@ -164,16 +164,15 @@ flags.DEFINE_integer('output_stride', 16,
 
 # Hard example mining related flags.
 flags.DEFINE_integer('hard_example_mining_step', 0,
-                     'The training step in which exact hard example mining kicks off. Note we '
-                     'gradually reduce the mining percent to the specified '
-                     'top_k_percent_pixels. For example, if hard_example_mining_step=100K and '
-                     'top_k_percent_pixels=0.25, then mining percent will gradually reduce from '
-                     '100% to 25% until 100K steps after which we only mine top 25% pixels.')
+                     'The training step in which exact hard example mining kicks off. '
+                     'Note we gradually reduce the mining percent to the specified top_k_percent_pixels. '
+                     'For example, if hard_example_mining_step=100K and top_k_percent_pixels=0.25, then mining percent '
+                     'will gradually reduce from 100% to 25% until 100K steps after which we only mine top 25% pixels.')
 
 
 flags.DEFINE_float('top_k_percent_pixels', 1.0,
-                   'The top k percent pixels (in terms of the loss values) used to compute'
-                   'loss during training. This is useful for hard pixel mining.')
+                   'The top k percent pixels (in terms of the loss values) used to compute loss during training. '
+                   'This is useful for hard pixel mining.')
 
 # Quantization setting.
 flags.DEFINE_integer('quantize_delay_step', -1,
@@ -389,8 +388,7 @@ def _train_deeplab_model(iterator, num_of_classes, ignore_label):
         # Create gradient update op.
         grad_updates = optimizer.apply_gradients(grads_and_vars, global_step=global_step)
 
-        # Gather update_ops. These contain, for example,
-        # the updates for the batch_norm variables created by model_fn.
+        # Gather update_ops. These contain, for example, the updates for the batch_norm variables created by model_fn.
         update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS)
         update_ops.append(grad_updates)
         update_op = tf.group(*update_ops)
@@ -401,7 +399,7 @@ def _train_deeplab_model(iterator, num_of_classes, ignore_label):
         # This implementation is mirrored from tf.slim.summaries.
         should_log = math_ops.equal(math_ops.mod(global_step, FLAGS.log_steps), 0)
         total_loss = tf.cond(should_log,
-                             lambda: tf.print(total_loss, [total_loss], 'Total loss is :'),
+                             lambda: tf.Print(total_loss, [total_loss], 'Total loss is :'),
                              lambda: total_loss)
 
         tf.summary.scalar('total_loss', total_loss)
@@ -424,7 +422,7 @@ def main(unused_argv):
     with graph.as_default():
         with tf.device(tf.train.replica_device_setter(ps_tasks=FLAGS.num_ps_tasks)):
             assert FLAGS.train_batch_size % FLAGS.num_clones == 0, \
-                'Training batch size not divisble by number of clones (GPUs).'
+                'Training batch size not divisible by number of clones (GPUs).'
             clone_batch_size = FLAGS.train_batch_size // FLAGS.num_clones
 
             dataset = data_generator.Dataset(

@@ -95,10 +95,7 @@ def get_extra_layer_scopes(last_layers_contain_logits_only=False):
         ]
 
 
-def predict_labels_multi_scale(images,
-                               model_options,
-                               eval_scales=(1.0,),
-                               add_flipped_images=False):
+def predict_labels_multi_scale(images, model_options,  eval_scales=(1.0,), add_flipped_images=False):
     """Predicts segmentation labels.
 
     Args:
@@ -196,13 +193,8 @@ def predict_labels(images, model_options, image_pyramid=None):
     return predictions
 
 
-def multi_scale_logits(images,
-                       model_options,
-                       image_pyramid,
-                       weight_decay=0.0001,
-                       is_training=False,
-                       fine_tune_batch_norm=False,
-                       nas_training_hyper_parameters=None):
+def multi_scale_logits(images, model_options, image_pyramid, weight_decay=0.0001,
+                       is_training=False, fine_tune_batch_norm=False, nas_training_hyper_parameters=None):
     """Gets the logits for multi-scale inputs.
 
     The returned logits are all downsampled (due to max-pooling layers)

@@ -15,9 +15,9 @@
 
 """Genotypes used by NAS."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 from deeplab.core import nas_cell
 

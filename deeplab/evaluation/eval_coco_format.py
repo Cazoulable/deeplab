@@ -27,9 +27,9 @@ predictions in this format. An implementation of Panoptic Quality is also
 provided for convenience.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import collections
 import json

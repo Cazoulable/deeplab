@@ -29,9 +29,9 @@ Image Segmentation", Chenxi Liu, Liang-Chieh Chen, Florian Schroff,
 Hartwig Adam, Wei Hua, Alan Yuille, Li Fei-Fei. In CVPR, 2019.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import tensorflow as tf
 

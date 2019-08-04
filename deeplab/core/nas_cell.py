@@ -15,9 +15,9 @@
 
 """Cell structure used by NAS."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import tensorflow as tf
 from deeplab.core.utils import resize_bilinear

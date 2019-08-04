@@ -139,30 +139,30 @@ TEST_SET = 'test'
 
 
 class ModelOptions(
-    collections.namedtuple('ModelOptions', [
-        'outputs_to_num_classes',
-        'crop_size',
-        'atrous_rates',
-        'output_stride',
-        'preprocessed_images_dtype',
-        'merge_method',
-        'add_image_level_feature',
-        'image_pooling_crop_size',
-        'image_pooling_stride',
-        'aspp_with_batch_norm',
-        'aspp_with_separable_conv',
-        'multi_grid',
-        'decoder_output_stride',
-        'decoder_use_separable_conv',
-        'logits_kernel_size',
-        'model_variant',
-        'depth_multiplier',
-        'divisible_by',
-        'prediction_with_upsampled_logits',
-        'dense_prediction_cell_config',
-        'nas_stem_output_num_conv_filters',
-        'use_bounded_activation'
-    ])):
+        collections.namedtuple('ModelOptions', [
+            'outputs_to_num_classes',
+            'crop_size',
+            'atrous_rates',
+            'output_stride',
+            'preprocessed_images_dtype',
+            'merge_method',
+            'add_image_level_feature',
+            'image_pooling_crop_size',
+            'image_pooling_stride',
+            'aspp_with_batch_norm',
+            'aspp_with_separable_conv',
+            'multi_grid',
+            'decoder_output_stride',
+            'decoder_use_separable_conv',
+            'logits_kernel_size',
+            'model_variant',
+            'depth_multiplier',
+            'divisible_by',
+            'prediction_with_upsampled_logits',
+            'dense_prediction_cell_config',
+            'nas_stem_output_num_conv_filters',
+            'use_bounded_activation'
+        ])):
     """Immutable class to hold model options."""
 
     __slots__ = ()
@@ -171,9 +171,7 @@ class ModelOptions(
                 output_stride=8, preprocessed_images_dtype=tf.float32):
         """Constructor to set default values.
         Args:
-            outputs_to_num_classes: A dictionary from output type to the number of
-                classes. For example, for the task of semantic segmentation with 21
-            semantic classes, we would have outputs_to_num_classes['semantic'] = 21.
+            outputs_to_num_classes: A dictionary from output type to the number of classes. 5 for steel
             crop_size: A tuple [crop_height, crop_width].
             atrous_rates: A list of atrous convolution rates for ASPP.
             output_stride: The ratio of input to output spatial resolution.

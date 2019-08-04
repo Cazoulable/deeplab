@@ -14,7 +14,7 @@
 # ==============================================================================
 """Tests for deeplab.datasets.data_generator."""
 
-from __future__ import print_function
+# from __future__ import print_function
 
 import collections
 

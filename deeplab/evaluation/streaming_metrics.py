@@ -19,9 +19,9 @@ assumed to be fed in in a stream, and the metric implementation accumulates
 across them.
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+# from __future__ import absolute_import
+# from __future__ import division
+# from __future__ import print_function
 
 import tensorflow as tf
 

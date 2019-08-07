@@ -54,11 +54,11 @@ flags.DEFINE_integer('task', 0, 'The task ID.')
 
 flags.DEFINE_string('train_logdir', None, 'Where the checkpoint and logs are stored.')
 
-flags.DEFINE_integer('log_steps', 10, 'Display logging information at every log_steps.')
+flags.DEFINE_integer('log_steps', 100, 'Display logging information at every log_steps.')
 
-flags.DEFINE_integer('save_interval_secs', 1200, 'How often, in seconds, we save the model to disk.')
+flags.DEFINE_integer('save_interval_secs', 7200, 'How often, in seconds, we save the model to disk.')
 
-flags.DEFINE_integer('save_summaries_secs', 600, 'How often, in seconds, we compute the summaries.')
+flags.DEFINE_integer('save_summaries_secs', 1200, 'How often, in seconds, we compute the summaries.')
 
 flags.DEFINE_boolean('save_summaries_images', False,
                      'Save sample inputs, labels, and semantic predictions as images to summary.')
@@ -159,6 +159,8 @@ flags.DEFINE_string('train_split', 'train', 'Which split of the dataset to be us
 
 flags.DEFINE_string('dataset_dir', None, 'Where the dataset reside.')
 
+from IPython import embed
+embed()
 
 def _build_deeplab(iterator, outputs_to_num_classes, ignore_label):
     """Builds a clone of DeepLab.

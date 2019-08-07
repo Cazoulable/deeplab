@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 VERSION_ID=0
 
 MODEL=xception_65

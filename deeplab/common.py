@@ -23,22 +23,17 @@ import tensorflow as tf
 
 flags = tf.app.flags
 
-# Flags for input preprocessing.
+# Flags for input pre-processing.
 
-flags.DEFINE_integer('min_resize_value', None,
-                     'Desired size of the smaller image side.')
+flags.DEFINE_integer('min_resize_value', None, 'Desired size of the smaller image side.')
 
-flags.DEFINE_integer('max_resize_value', None,
-                     'Maximum allowed size of the larger image side.')
+flags.DEFINE_integer('max_resize_value', None, 'Maximum allowed size of the larger image side.')
 
-flags.DEFINE_integer('resize_factor', None,
-                     'Resized dimensions are multiple of factor plus one.')
+flags.DEFINE_integer('resize_factor', None, 'Resized dimensions are multiple of factor plus one.')
 
 # Model dependent flags.
 
-flags.DEFINE_integer('logits_kernel_size', 1,
-                     'The kernel size for the convolutional kernel that '
-                     'generates logits.')
+flags.DEFINE_integer('logits_kernel_size', 1, 'The kernel size for the convolutional kernel that generates logits.')
 
 # When using 'mobilent_v2', we set atrous_rates = decoder_output_stride = None.
 # When using 'xception_65' or 'resnet_v1' model variants, we set
@@ -46,77 +41,56 @@ flags.DEFINE_integer('logits_kernel_size', 1,
 # See core/feature_extractor.py for supported model variants.
 flags.DEFINE_string('model_variant', 'mobilenet_v2', 'DeepLab model variant.')
 
-flags.DEFINE_multi_float('image_pyramid', None,
-                         'Input scales for multi-scale feature extraction.')
+flags.DEFINE_multi_float('image_pyramid', None, 'Input scales for multi-scale feature extraction.')
 
-flags.DEFINE_boolean('add_image_level_feature', True,
-                     'Add image level feature.')
+flags.DEFINE_boolean('add_image_level_feature', True, 'Add image level feature.')
 
-flags.DEFINE_list(
-    'image_pooling_crop_size', None,
-    'Image pooling crop size [height, width] used in the ASPP module. When '
-    'value is None, the model performs image pooling with "crop_size". This'
-    'flag is useful when one likes to use different image pooling sizes.')
+flags.DEFINE_list('image_pooling_crop_size', None,
+                  'Image pooling crop size [height, width] used in the ASPP module. '
+                  'When value is None, the model performs image pooling with "crop_size". '
+                  'This flag is useful when one likes to use different image pooling sizes.')
 
-flags.DEFINE_list(
-    'image_pooling_stride', '1,1',
-    'Image pooling stride [height, width] used in the ASPP image pooling. ')
+flags.DEFINE_list('image_pooling_stride', '1,1', 'Image pooling stride [height, width] used in the ASPP image pooling.')
 
-flags.DEFINE_boolean('aspp_with_batch_norm', True,
-                     'Use batch norm parameters for ASPP or not.')
+flags.DEFINE_boolean('aspp_with_batch_norm', True, 'Use batch norm parameters for ASPP or not.')
 
-flags.DEFINE_boolean('aspp_with_separable_conv', True,
-                     'Use separable convolution for ASPP or not.')
+flags.DEFINE_boolean('aspp_with_separable_conv', True, 'Use separable convolution for ASPP or not.')
 
 # Defaults to None. Set multi_grid = [1, 2, 4] when using provided
 # 'resnet_v1_{50,101}_beta' checkpoints.
-flags.DEFINE_multi_integer('multi_grid', None,
-                           'Employ a hierarchy of atrous rates for ResNet.')
+flags.DEFINE_multi_integer('multi_grid', None, 'Employ a hierarchy of atrous rates for ResNet.')
 
 flags.DEFINE_float('depth_multiplier', 1.0,
-                   'Multiplier for the depth (number of channels) for all '
-                   'convolution ops used in MobileNet.')
+                   'Multiplier for the depth (number of channels) for all convolution ops used in MobileNet.')
 
 flags.DEFINE_integer('divisible_by', None,
-                     'An integer that ensures the layer # channels are '
-                     'divisible by this value. Used in MobileNet.')
+                     'An integer that ensures the layer # channels are divisible by this value. Used in MobileNet.')
 
 # For `xception_65`, use decoder_output_stride = 4. For `mobilenet_v2`, use
 # decoder_output_stride = None.
 flags.DEFINE_list('decoder_output_stride', None,
-                  'Comma-separated list of strings with the number specifying '
-                  'output stride of low-level features at each network level.'
-                  'Current semantic segmentation implementation assumes at '
-                  'most one output stride (i.e., either None or a list with '
-                  'only one element.')
+                  'Comma-separated list of strings with the number specifying output stride of low-level features '
+                  'at each network level. Current semantic segmentation implementation assumes at most '
+                  'one output stride (i.e., either None or a list with only one element.')
 
-flags.DEFINE_boolean('decoder_use_separable_conv', True,
-                     'Employ separable convolution for decoder or not.')
+flags.DEFINE_boolean('decoder_use_separable_conv', True, 'Employ separable convolution for decoder or not.')
 
-flags.DEFINE_enum('merge_method', 'max', ['max', 'avg'],
-                  'Scheme to merge multi scale features.')
+flags.DEFINE_enum('merge_method', 'max', ['max', 'avg'], 'Scheme to merge multi scale features.')
 
-flags.DEFINE_boolean(
-    'prediction_with_upsampled_logits', True,
-    'When performing prediction, there are two options: (1) bilinear '
-    'upsampling the logits followed by argmax, or (2) armax followed by '
-    'nearest upsampling the predicted labels. The second option may introduce '
-    'some "blocking effect", but it is more computationally efficient. '
-    'Currently, prediction_with_upsampled_logits=False is only supported for '
-    'single-scale inference.')
+flags.DEFINE_boolean('prediction_with_upsampled_logits', True,
+                     'When performing prediction, there are two options: (1) bilinear upsampling the logits followed '
+                     'by argmax, or (2) armax followed by nearest upsampling the predicted labels. '
+                     'The second option may introduce some "blocking effect", but it is more computationally efficient.'
+                     'Currently, prediction_with_upsampled_logits=False is only supported for single-scale inference.')
 
-flags.DEFINE_string(
-    'dense_prediction_cell_json',
-    '',
-    'A JSON file that specifies the dense prediction cell.')
+flags.DEFINE_string('dense_prediction_cell_json', '', 'A JSON file that specifies the dense prediction cell.')
 
-flags.DEFINE_integer(
-    'nas_stem_output_num_conv_filters', 20,
-    'Number of filters of the stem output tensor in NAS models.')
+flags.DEFINE_integer('nas_stem_output_num_conv_filters', 20,
+                     'Number of filters of the stem output tensor in NAS models.')
 
 flags.DEFINE_bool('use_bounded_activation', False,
-                  'Whether or not to use bounded activations. Bounded '
-                  'activations better lend themselves to quantized inference.')
+                  'Whether or not to use bounded activations.'
+                  'Bounded activations better lend themselves to quantized inference.')
 
 FLAGS = flags.FLAGS
 

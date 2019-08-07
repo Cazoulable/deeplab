@@ -167,13 +167,25 @@ def main(unused_argv):
         tf.contrib.tfprof.model_analyzer.print_model_analysis(
             tf.get_default_graph(),
             tfprof_options=tf.contrib.tfprof.model_analyzer.FLOAT_OPS_OPTIONS)
-        tf.contrib.training.evaluate_repeatedly(
-            master=FLAGS.master,
-            checkpoint_dir=FLAGS.checkpoint_dir,
-            eval_ops=[update_op],
-            max_number_of_evaluations=num_eval_iters,
-            hooks=hooks,
-            eval_interval_secs=FLAGS.eval_interval_secs)
+        # tf.contrib.training.evaluate_repeatedly(
+        #     master=FLAGS.master,
+        #     checkpoint_dir=FLAGS.checkpoint_dir,
+        #     eval_ops=[update_op],
+        #     max_number_of_evaluations=num_eval_iters,
+        #     hooks=hooks,
+        #     eval_interval_secs=FLAGS.eval_interval_secs)
+        miou_scalar = tf.contrib.training.evaluate_once(
+             FLAGS.checkpoint_dir,
+             master=FLAGS.master,
+             scaffold=None,
+             eval_ops=[update_op],
+             feed_dict=None,
+             final_ops=miou,
+             final_ops_feed_dict=None,
+             hooks=hooks,
+             config=None)
+        tf.logging.info('>>>MIOU:{}'.format(miou_scalar))	
+
 
 
 if __name__ == '__main__':

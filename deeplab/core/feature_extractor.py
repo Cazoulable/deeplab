@@ -16,12 +16,12 @@
 """Extracts features for different models."""
 import functools
 import tensorflow as tf
+from tensorflow.contrib.slim.nets import resnet_utils
 
 from deeplab.core import nas_network
 from deeplab.core import resnet_v1_beta
 from deeplab.core import xception
-from tensorflow.contrib.slim.nets import resnet_utils
-from mobilenet import mobilenet_v2
+from deeplab.mobilenet import mobilenet_v2
 
 
 slim = tf.contrib.slim

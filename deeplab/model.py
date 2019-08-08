@@ -436,11 +436,8 @@ def extract_features(images,
                     # Merge branch logits.
                     concat_logits = tf.concat(branch_logits, 3)
                     concat_logits = slim.conv2d(concat_logits, depth, 1, scope=CONCAT_PROJECTION_SCOPE)
-                    concat_logits = slim.dropout(
-                        concat_logits,
-                        keep_prob=0.9,
-                        is_training=is_training,
-                        scope=CONCAT_PROJECTION_SCOPE + '_dropout')
+                    concat_logits = slim.dropout(concat_logits, keep_prob=0.9, is_training=is_training,
+                                                 scope=CONCAT_PROJECTION_SCOPE + '_dropout')
 
                     return concat_logits, end_points
 
@@ -578,44 +575,38 @@ def refine_by_decoder(features,
                         else:
                           feature_name = '{}/{}'.format(feature_extractor.name_scope[model_variant], name)
 
-                        decoder_features_list.append(
-                            slim.conv2d(end_points[feature_name], 48, 1,
-                                        scope='feature_projection' + str(i) + scope_suffix))
+                        decoder_features_i = slim.conv2d(end_points[feature_name], 48, 1,
+                                                         scope='feature_projection' + str(i) + scope_suffix)
+                        decoder_features_list.append(decoder_features_i)
 
                         # Determine the output size.
                         decoder_height = scale_dimension(crop_size[0], 1.0 / output_stride)
                         decoder_width = scale_dimension(crop_size[1], 1.0 / output_stride)
+                        decoder_size = [decoder_height, decoder_width]
                         # Resize to decoder_height/decoder_width.
                         for j, feature in enumerate(decoder_features_list):
-                            decoder_features_list[j] = _resize_bilinear(feature, [decoder_height, decoder_width],
-                                                                        feature.dtype)
+                            decoder_features_list[j] = _resize_bilinear(feature, decoder_size, feature.dtype)
                             h = (None if isinstance(decoder_height, tf.Tensor) else decoder_height)
                             w = (None if isinstance(decoder_width, tf.Tensor) else decoder_width)
                             decoder_features_list[j].set_shape([None, h, w, None])
 
                         decoder_depth = 256
                         if decoder_use_separable_conv:
-                            decoder_features = split_separable_conv2d(
-                                tf.concat(decoder_features_list, 3),
-                                filters=decoder_depth,
-                                rate=1,
-                                weight_decay=weight_decay,
-                                scope='decoder_conv0' + scope_suffix)
-                            decoder_features = split_separable_conv2d(
-                                decoder_features,
-                                filters=decoder_depth,
-                                rate=1,
-                                weight_decay=weight_decay,
-                                scope='decoder_conv1' + scope_suffix)
+                            decoder_features = split_separable_conv2d(tf.concat(decoder_features_list, 3),
+                                                                      filters=decoder_depth,
+                                                                      rate=1,
+                                                                      weight_decay=weight_decay,
+                                                                      scope='decoder_conv0' + scope_suffix)
+                            decoder_features = split_separable_conv2d(decoder_features,
+                                                                      filters=decoder_depth,
+                                                                      rate=1,
+                                                                      weight_decay=weight_decay,
+                                                                      scope='decoder_conv1' + scope_suffix)
                         else:
                             num_convs = 2
-                            decoder_features = slim.repeat(
-                                tf.concat(decoder_features_list, 3),
-                                num_convs,
-                                slim.conv2d,
-                                decoder_depth,
-                                3,
-                                scope='decoder_conv' + str(i) + scope_suffix)
+                            decoder_features = slim.repeat(tf.concat(decoder_features_list, 3),
+                                                           num_convs, slim.conv2d, decoder_depth, 3,
+                                                           scope='decoder_conv' + str(i) + scope_suffix)
                     decoder_stage += 1
                 return decoder_features
 

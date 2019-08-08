@@ -240,10 +240,8 @@ def random_crop(image_list, crop_height, crop_width):
   rank_assertions = []
   for i in range(len(image_list)):
     image_rank = tf.rank(image_list[i])
-    rank_assert = tf.Assert(
-        tf.equal(image_rank, 3),
-        ['Wrong rank for tensor  %s [expected] [actual]',
-         image_list[i].name, 3, image_rank])
+    rank_assert = tf.Assert(tf.equal(image_rank, 3),
+        ['Wrong rank for tensor  %s [expected] [actual]', image_list[i].name, 3, image_rank])
     rank_assertions.append(rank_assert)
 
   with tf.control_dependencies([rank_assertions[0]]):
@@ -251,9 +249,7 @@ def random_crop(image_list, crop_height, crop_width):
   image_height = image_shape[0]
   image_width = image_shape[1]
   crop_size_assert = tf.Assert(
-      tf.logical_and(
-          tf.greater_equal(image_height, crop_height),
-          tf.greater_equal(image_width, crop_width)),
+      tf.logical_and(tf.greater_equal(image_height, crop_height), tf.greater_equal(image_width, crop_width)),
       ['Crop size greater than the image size.'])
 
   asserts = [rank_assertions[0], crop_size_assert]
@@ -266,31 +262,23 @@ def random_crop(image_list, crop_height, crop_width):
     height = shape[0]
     width = shape[1]
 
-    height_assert = tf.Assert(
-        tf.equal(height, image_height),
-        ['Wrong height for tensor %s [expected][actual]',
-         image.name, height, image_height])
-    width_assert = tf.Assert(
-        tf.equal(width, image_width),
-        ['Wrong width for tensor %s [expected][actual]',
-         image.name, width, image_width])
+    height_assert = tf.Assert(tf.equal(height, image_height),
+        ['Wrong height for tensor %s [expected][actual]', image.name, height, image_height])
+    width_assert = tf.Assert(tf.equal(width, image_width),
+        ['Wrong width for tensor %s [expected][actual]',image.name, width, image_width])
     asserts.extend([height_assert, width_assert])
 
   # Create a random bounding box.
-  #
   # Use tf.random_uniform and not numpy.random.rand as doing the former would
   # generate random numbers at graph eval time, unlike the latter which
   # generates random numbers at graph definition time.
   with tf.control_dependencies(asserts):
     max_offset_height = tf.reshape(image_height - crop_height + 1, [])
     max_offset_width = tf.reshape(image_width - crop_width + 1, [])
-  offset_height = tf.random_uniform(
-      [], maxval=max_offset_height, dtype=tf.int32)
-  offset_width = tf.random_uniform(
-      [], maxval=max_offset_width, dtype=tf.int32)
+  offset_height = tf.random_uniform([], maxval=max_offset_height, dtype=tf.int32)
+  offset_width = tf.random_uniform([], maxval=max_offset_width, dtype=tf.int32)
 
-  return [_crop(image, offset_height, offset_width,
-                crop_height, crop_width) for image in image_list]
+  return [_crop(image, offset_height, offset_width, crop_height, crop_width) for image in image_list]
 
 
 def get_random_scale(min_scale_factor, max_scale_factor, step_size):
@@ -327,37 +315,30 @@ def get_random_scale(min_scale_factor, max_scale_factor, step_size):
 
 
 def randomly_scale_image_and_label(image, label=None, scale=1.0):
-  """Randomly scales image and label.
+    """Randomly scales image and label.
 
-  Args:
+    Args:
     image: Image with shape [height, width, 3].
     label: Label with shape [height, width, 1].
     scale: The value to scale image and label.
 
-  Returns:
+    Returns:
     Scaled image and label.
-  """
-  # No random scaling if scale == 1.
-  if scale == 1.0:
+    """
+    # No random scaling if scale == 1.
+    if scale == 1.0:
+        return image, label
+    image_shape = tf.shape(image)
+    new_dim = tf.cast(tf.cast([image_shape[0], image_shape[1]], tf.float32) * scale, tf.int32)
+
+    # Need squeeze and expand_dims because image interpolation takes
+    # 4D tensors as input.
+    image = tf.squeeze(tf.image.resize_bilinear(tf.expand_dims(image, 0), new_dim, align_corners=True), [0])
+    if label is not None:
+          label = tf.expand_dims(label, 0)
+          label = tf.squeeze(tf.image.resize_nearest_neighbor(label, new_dim, align_corners=True), [0])
+
     return image, label
-  image_shape = tf.shape(image)
-  new_dim = tf.cast(
-      tf.cast([image_shape[0], image_shape[1]], tf.float32) * scale,
-      tf.int32)
-
-  # Need squeeze and expand_dims because image interpolation takes
-  # 4D tensors as input.
-  image = tf.squeeze(tf.image.resize_bilinear(
-      tf.expand_dims(image, 0),
-      new_dim,
-      align_corners=True), [0])
-  if label is not None:
-    label = tf.squeeze(tf.image.resize_nearest_neighbor(
-        tf.expand_dims(label, 0),
-        new_dim,
-        align_corners=True), [0])
-
-  return image, label
 
 
 def resolve_shape(tensor, rank=None, scope=None):
@@ -457,8 +438,7 @@ def resize_to_range(image,
 
     new_size = large_size
     if max_size is not None:
-      # Calculate the smaller of the possible sizes, use that if the larger
-      # is too big.
+      # Calculate the smaller of the possible sizes, use that if the larger is too big.
       orig_max_size = tf.maximum(orig_height, orig_width)
       small_scale_factor = max_size / orig_max_size
       small_height = tf.to_int32(tf.ceil(orig_height * small_scale_factor))

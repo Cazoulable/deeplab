@@ -224,20 +224,13 @@ class Dataset(object):
           lambda: tf.image.decode_png(content, channels))
 
     features = {
-        'image/encoded':
-            tf.FixedLenFeature((), tf.string, default_value=''),
-        'image/filename':
-            tf.FixedLenFeature((), tf.string, default_value=''),
-        'image/format':
-            tf.FixedLenFeature((), tf.string, default_value='jpeg'),
-        'image/height':
-            tf.FixedLenFeature((), tf.int64, default_value=0),
-        'image/width':
-            tf.FixedLenFeature((), tf.int64, default_value=0),
-        'image/segmentation/class/encoded':
-            tf.FixedLenFeature((), tf.string, default_value=''),
-        'image/segmentation/class/format':
-            tf.FixedLenFeature((), tf.string, default_value='png'),
+        'image/encoded': tf.FixedLenFeature((), tf.string, default_value=''),
+        'image/filename': tf.FixedLenFeature((), tf.string, default_value=''),
+        'image/format': tf.FixedLenFeature((), tf.string, default_value='jpeg'),
+        'image/height': tf.FixedLenFeature((), tf.int64, default_value=0),
+        'image/width': tf.FixedLenFeature((), tf.int64, default_value=0),
+        'image/segmentation/class/encoded': tf.FixedLenFeature((), tf.string, default_value=''),
+        'image/segmentation/class/format': tf.FixedLenFeature((), tf.string, default_value='png'),
     }
 
     parsed_features = tf.parse_single_example(example_proto, features)
@@ -246,8 +239,7 @@ class Dataset(object):
 
     label = None
     if self.split_name != common.TEST_SET:
-      label = _decode_image(
-          parsed_features['image/segmentation/class/encoded'], channels=1)
+      label = _decode_image(parsed_features['image/segmentation/class/encoded'], channels=1)
 
     image_name = parsed_features['image/filename']
     if image_name is None:
@@ -266,8 +258,7 @@ class Dataset(object):
       elif label.get_shape().ndims == 3 and label.shape.dims[2] == 1:
         pass
       else:
-        raise ValueError('Input label shape must be [height, width], or '
-                         '[height, width, 1].')
+        raise ValueError('Input label shape must be [height, width], or [height, width, 1].')
 
       label.set_shape([None, None, 1])
 
@@ -352,6 +343,5 @@ class Dataset(object):
       A list of input files.
     """
     file_pattern = _FILE_PATTERN
-    file_pattern = os.path.join(self.dataset_dir,
-                                file_pattern % self.split_name)
+    file_pattern = os.path.join(self.dataset_dir, file_pattern % self.split_name)
     return tf.gfile.Glob(file_pattern)

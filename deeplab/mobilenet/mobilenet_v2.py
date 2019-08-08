@@ -29,8 +29,8 @@ import functools
 
 import tensorflow as tf
 
-from mobilenet import conv_blocks as ops
-from mobilenet import mobilenet as lib
+from deeplab.mobilenet import conv_blocks as ops
+from deeplab.mobilenet import mobilenet as lib
 
 slim = tf.contrib.slim
 op = lib.op

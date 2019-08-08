@@ -315,37 +315,30 @@ def get_random_scale(min_scale_factor, max_scale_factor, step_size):
 
 
 def randomly_scale_image_and_label(image, label=None, scale=1.0):
-  """Randomly scales image and label.
+    """Randomly scales image and label.
 
-  Args:
+    Args:
     image: Image with shape [height, width, 3].
     label: Label with shape [height, width, 1].
     scale: The value to scale image and label.
 
-  Returns:
+    Returns:
     Scaled image and label.
-  """
-  # No random scaling if scale == 1.
-  if scale == 1.0:
+    """
+    # No random scaling if scale == 1.
+    if scale == 1.0:
+        return image, label
+    image_shape = tf.shape(image)
+    new_dim = tf.cast(tf.cast([image_shape[0], image_shape[1]], tf.float32) * scale, tf.int32)
+
+    # Need squeeze and expand_dims because image interpolation takes
+    # 4D tensors as input.
+    image = tf.squeeze(tf.image.resize_bilinear(tf.expand_dims(image, 0), new_dim, align_corners=True), [0])
+    if label is not None:
+          label = tf.expand_dims(label, 0)
+          label = tf.squeeze(tf.image.resize_nearest_neighbor(label, new_dim, align_corners=True), [0])
+
     return image, label
-  image_shape = tf.shape(image)
-  new_dim = tf.cast(
-      tf.cast([image_shape[0], image_shape[1]], tf.float32) * scale,
-      tf.int32)
-
-  # Need squeeze and expand_dims because image interpolation takes
-  # 4D tensors as input.
-  image = tf.squeeze(tf.image.resize_bilinear(
-      tf.expand_dims(image, 0),
-      new_dim,
-      align_corners=True), [0])
-  if label is not None:
-    label = tf.squeeze(tf.image.resize_nearest_neighbor(
-        tf.expand_dims(label, 0),
-        new_dim,
-        align_corners=True), [0])
-
-  return image, label
 
 
 def resolve_shape(tensor, rank=None, scope=None):
@@ -445,8 +438,7 @@ def resize_to_range(image,
 
     new_size = large_size
     if max_size is not None:
-      # Calculate the smaller of the possible sizes, use that if the larger
-      # is too big.
+      # Calculate the smaller of the possible sizes, use that if the larger is too big.
       orig_max_size = tf.maximum(orig_height, orig_width)
       small_scale_factor = max_size / orig_max_size
       small_height = tf.to_int32(tf.ceil(orig_height * small_scale_factor))

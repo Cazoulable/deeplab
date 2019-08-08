@@ -67,9 +67,9 @@ def preprocess_image_and_label(image,
     """
     if is_training and label is None:
         raise ValueError('During training, label must be provided.')
-    if model_variant is None:
-        tf.logging.warning('Default mean-subtraction is performed. Please specify a model_variant. '
-                           'See feature_extractor.network_map for supported model variants.')
+    # if model_variant is None:
+    #     tf.logging.warning('Default mean-subtraction is performed. Please specify a model_variant. '
+    #                        'See feature_extractor.network_map for supported model variants.')
 
     # Keep reference to original image.
     original_image = image
@@ -79,16 +79,14 @@ def preprocess_image_and_label(image,
     if label is not None:
         label = tf.cast(label, tf.int32)
 
-  # Resize image and label to the desired range.
+    # Resize image and label to the desired range.
     if min_resize_value or max_resize_value:
-        [processed_image, label] = (
-            preprocess_utils.resize_to_range(
-                image=processed_image,
-                label=label,
-                min_size=min_resize_value,
-                max_size=max_resize_value,
-                factor=resize_factor,
-                align_corners=True))
+        [processed_image, label] = preprocess_utils.resize_to_range(image=processed_image,
+                                                                    label=label,
+                                                                    min_size=min_resize_value,
+                                                                    max_size=max_resize_value,
+                                                                    factor=resize_factor,
+                                                                    align_corners=True)
         # The `original_image` becomes the resized image.
         original_image = tf.identity(processed_image)
 
